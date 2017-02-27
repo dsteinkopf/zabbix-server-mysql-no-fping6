@@ -1,0 +1,3 @@
+docker build -t dsteinkopf/zabbix-server-mysql-no-fping6 .
+docker push dsteinkopf/zabbix-server-mysql-no-fping6:ubuntu-latest
+
