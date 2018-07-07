@@ -1,4 +1,4 @@
-FROM zabbix/zabbix-server-mysql:ubuntu-latest
+FROM zabbix/zabbix-server-mysql:ubuntu-3.4.10
 
 MAINTAINER Dirk Steinkopf "https://github.com/dsteinkopf"
 
