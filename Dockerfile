@@ -28,9 +28,9 @@ ENV MIBDIRS=/usr/share/snmp/mibs:/var/lib/zabbix/mibs:/usr/share/mibs/ietf:/usr/
 # enable snmp mibs loading:
 # remove problematic mibs which result in errors and are not needed (...why is this necessary?...)
 RUN sed -i 's/^\( *mibs *:.*\)$/# \1/g' /etc/snmp/snmp.conf && \
-	rm /usr/share/mibs/iana/IANA-IPPM-METRICS-REGISTRY-MIB && \
-	rm /usr/share/mibs/ietf/SNMPv2-PDU && \
-	rm /usr/share/mibs/ietf/IPATM-IPMC-MIB && \
+	rm -f /usr/share/mibs/iana/IANA-IPPM-METRICS-REGISTRY-MIB && \
+	rm -f /usr/share/mibs/ietf/SNMPv2-PDU && \
+	rm -f /usr/share/mibs/ietf/IPATM-IPMC-MIB && \
 	snmptranslate .iso.3.6.1.6.3.1.1.5.3
 
 RUN pip install requests
