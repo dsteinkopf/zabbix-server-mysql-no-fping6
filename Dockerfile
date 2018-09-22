@@ -4,10 +4,10 @@ MAINTAINER Dirk Steinkopf "https://github.com/dsteinkopf"
 
 RUN mv /usr/bin/fping6 /usr/bin/fping6.hide
 
-# enable the multiverse
-RUN echo 'deb http://archive.ubuntu.com/ubuntu/ trusty multiverse' >> /etc/apt/sources.list && \
-    echo 'deb http://archive.ubuntu.com/ubuntu/ trusty-updates multiverse' >> /etc/apt/sources.list && \
-    echo 'deb http://archive.ubuntu.com/ubuntu/ trusty-security multiverse' >> /etc/apt/sources.list
+# enable the multiverse (snmp-mibs-downloader comes from there)
+RUN echo 'deb http://archive.ubuntu.com/ubuntu/ bionic multiverse' >> /etc/apt/sources.list && \
+    echo 'deb http://archive.ubuntu.com/ubuntu/ bionic-updates multiverse' >> /etc/apt/sources.list && \
+    echo 'deb http://archive.ubuntu.com/ubuntu/ bionic-security multiverse' >> /etc/apt/sources.list
 
 # bc is for some externalscripts (e.g. zext_ssl_cert.sh)
 
@@ -23,14 +23,12 @@ RUN apt-get update && \
 		snmp-mibs-downloader
 
 # seems important for mib lookup to work:
-ENV MIBDIRS=/usr/share/snmp/mibs:/var/lib/zabbix/mibs:/usr/share/mibs/ietf:/usr/share/mibs/iana
+ENV MIBDIRS=/var/lib/snmp/mibs/ietf:/var/lib/snmp/mibs/iana:/usr/share/snmp/mibs:/var/lib/zabbix/mibs
 
 # enable snmp mibs loading:
 # remove problematic mibs which result in errors and are not needed (...why is this necessary?...)
 RUN sed -i 's/^\( *mibs *:.*\)$/# \1/g' /etc/snmp/snmp.conf && \
-	rm -f /usr/share/mibs/iana/IANA-IPPM-METRICS-REGISTRY-MIB && \
-	rm -f /usr/share/mibs/ietf/SNMPv2-PDU && \
-	rm -f /usr/share/mibs/ietf/IPATM-IPMC-MIB && \
+	rm -f /var/lib/snmp/mibs/ietf/SNMPv2-PDU && \
 	snmptranslate .iso.3.6.1.6.3.1.1.5.3
 
 RUN pip install requests
