@@ -20,7 +20,9 @@ RUN apt-get update && \
                 python-pip \
                 python-requests \
 		snmp \
-		snmp-mibs-downloader
+		snmp-mibs-downloader \
+                jq \
+                curl
 
 # seems important for mib lookup to work:
 ENV MIBDIRS=/var/lib/snmp/mibs/ietf:/var/lib/snmp/mibs/iana:/usr/share/snmp/mibs:/var/lib/zabbix/mibs
