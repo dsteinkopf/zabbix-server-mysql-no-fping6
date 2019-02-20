@@ -24,6 +24,8 @@ RUN apt-get update && \
                 jq \
                 curl
 
+RUN apt install dumb-init
+
 # seems important for mib lookup to work:
 ENV MIBDIRS=/var/lib/snmp/mibs/ietf:/var/lib/snmp/mibs/iana:/usr/share/snmp/mibs:/var/lib/zabbix/mibs
 
@@ -34,4 +36,8 @@ RUN sed -i 's/^\( *mibs *:.*\)$/# \1/g' /etc/snmp/snmp.conf && \
 	snmptranslate .iso.3.6.1.6.3.1.1.5.3
 
 RUN pip install requests
+
+# see https://support.zabbix.com/browse/ZBX-15208?focusedCommentId=320758&page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#comment-320758
+ENTRYPOINT ["/usr/bin/dumb-init", "--"]
+CMD ["docker-entrypoint.sh"]
 
