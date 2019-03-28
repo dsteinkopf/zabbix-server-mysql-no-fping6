@@ -22,7 +22,8 @@ RUN apt-get update && \
 		snmp \
 		snmp-mibs-downloader \
                 jq \
-                curl
+                curl \
+		freeradius-utils
 
 RUN apt install dumb-init
 
