@@ -2,8 +2,6 @@ FROM zabbix/zabbix-server-mysql:ubuntu-latest
 
 MAINTAINER Dirk Steinkopf "https://github.com/dsteinkopf"
 
-RUN sed -i 's/Fping6Location=\(.*\)/Fping6Location=disable/' /etc/zabbix/zabbix_server.conf
-
 USER root
 
 # enable the multiverse (snmp-mibs-downloader comes from there)
@@ -27,8 +25,6 @@ RUN apt-get update && \
                 curl \
 		freeradius-utils
 
-RUN apt install dumb-init
-
 # seems important for mib lookup to work:
 ENV MIBDIRS=/var/lib/snmp/mibs/ietf:/var/lib/snmp/mibs/iana:/usr/share/snmp/mibs:/var/lib/zabbix/mibs
 
@@ -39,5 +35,8 @@ RUN sed -i 's/^\( *mibs *:.*\)$/# \1/g' /etc/snmp/snmp.conf && \
 	snmptranslate .iso.3.6.1.6.3.1.1.5.3
 
 RUN pip install requests
+
+RUN sed -i 's/update_config_var .ZBX_CONFIG .Fping6Location./update_config_var $ZBX_CONFIG "Fping6Location" "\/doesnotexist"/' /usr/bin/docker-entrypoint.sh
+RUN sed -i 's/update_config_var .ZBX_CONFIG .FpingLocation./update_config_var $ZBX_CONFIG "FpingLocation" "\/usr\/bin\/fping"/' /usr/bin/docker-entrypoint.sh
 
 USER 1997
