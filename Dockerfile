@@ -2,7 +2,9 @@ FROM zabbix/zabbix-server-mysql:ubuntu-latest
 
 MAINTAINER Dirk Steinkopf "https://github.com/dsteinkopf"
 
-RUN mv /usr/bin/fping6 /usr/bin/fping6.hide
+RUN sed -i 's/Fping6Location=\(.*\)/Fping6Location=disable/' /etc/zabbix/zabbix_server.conf
+
+USER root
 
 # enable the multiverse (snmp-mibs-downloader comes from there)
 RUN echo 'deb http://archive.ubuntu.com/ubuntu/ bionic multiverse' >> /etc/apt/sources.list && \
@@ -38,7 +40,4 @@ RUN sed -i 's/^\( *mibs *:.*\)$/# \1/g' /etc/snmp/snmp.conf && \
 
 RUN pip install requests
 
-# see https://support.zabbix.com/browse/ZBX-15208?focusedCommentId=320758&page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#comment-320758
-ENTRYPOINT ["/usr/bin/dumb-init", "--"]
-CMD ["docker-entrypoint.sh"]
-
+USER 1997
