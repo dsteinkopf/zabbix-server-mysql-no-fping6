@@ -23,8 +23,8 @@ RUN apt-get update && \
 		snmp-mibs-downloader \
                 jq \
                 curl \
-		freeradius-utils
-
+		freeradius-utils \
+		bind9-host
 
 # seems important for mib lookup to work:
 ENV MIBDIRS=/var/lib/snmp/mibs/ietf:/var/lib/snmp/mibs/iana:/usr/share/snmp/mibs:/var/lib/zabbix/mibs
